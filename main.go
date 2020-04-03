@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 
 	"github.com/ip2location/ip2location-go"
 )
@@ -47,7 +48,10 @@ func main() {
 		log.Println("failed to open: ip2location")
 		return
 	}
-	port := "3000"
+	port := os.Getenv("APP_PORT")
+	if port == "" {
+		port = "3000"
+	}
 	http.HandleFunc("/", apiHandler)
 	log.Println("Listening port " + port)
 	http.ListenAndServe(":"+port, nil)
